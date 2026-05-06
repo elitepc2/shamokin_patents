@@ -5,180 +5,224 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shamokin Patent Archive</title>
 
+<!-- Google Analytics goes here later
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-XXXXXXXXXX');
+</script>
+-->
+
 <style>
-body{
-    font-family: Arial, sans-serif;
-    background:#111827;
-    color:white;
-    margin:0;
-    padding:0;
-}
-
-header{
-    background:#4B2E83;
-    padding:30px;
-    text-align:center;
-}
-
-header h1{
-    margin:0;
-    font-size:2.5rem;
-}
-
-header p{
-    opacity:.9;
-}
-
-.container{
-    max-width:1200px;
-    margin:auto;
-    padding:20px;
-}
-
-.search-box{
-    margin-bottom:20px;
-}
-
-.search-box input{
-    width:100%;
-    padding:15px;
-    font-size:18px;
-    border-radius:10px;
-    border:none;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:20px;
-}
-
-.card{
-    background:#1f2937;
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 0 10px rgba(0,0,0,.4);
-}
-
-.card h2{
-    margin-top:0;
-    color:#c4b5fd;
-}
-
-.meta{
-    font-size:.9rem;
-    opacity:.8;
-    margin-bottom:10px;
-}
-
-.summary{
-    margin-top:15px;
-    line-height:1.5;
-}
-
-.button{
-    display:inline-block;
-    margin-top:15px;
-    padding:10px 15px;
-    background:#4B2E83;
-    color:white;
-    text-decoration:none;
-    border-radius:8px;
-}
-
-.button:hover{
-    background:#6d48b5;
-}
-
-footer{
-    text-align:center;
-    padding:40px;
-    opacity:.6;
-}
+body{font-family:Arial,sans-serif;background:#111827;color:white;margin:0}
+header{background:#4B2E83;padding:35px 20px;text-align:center}
+header h1{margin:0;font-size:2.6rem}
+header p{opacity:.9}
+.container{max-width:1250px;margin:auto;padding:20px}
+.section{margin:30px 0}
+.panel{background:#1f2937;border-radius:16px;padding:20px;margin-bottom:20px}
+.controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+input,select{padding:14px;border-radius:10px;border:none;font-size:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.stat{background:#2d3748;border-radius:14px;padding:16px;text-align:center}
+.stat strong{display:block;font-size:1.8rem;color:#c4b5fd}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:20px}
+.card{background:#1f2937;border-radius:16px;padding:18px;box-shadow:0 0 10px rgba(0,0,0,.35)}
+.card h2{margin-top:0;color:#c4b5fd}
+.meta{font-size:.92rem;opacity:.88;line-height:1.5}
+.badge{display:inline-block;background:#4B2E83;padding:5px 9px;border-radius:999px;margin:4px 4px 8px 0;font-size:.78rem}
+.button{display:inline-block;margin:10px 8px 0 0;padding:10px 13px;background:#4B2E83;color:white;text-decoration:none;border-radius:8px}
+.button:hover{background:#6d48b5}
+.preview{width:100%;height:250px;border:0;border-radius:10px;background:#111827;margin-top:12px}
+.timeline button{margin:4px;padding:8px 12px;border:0;border-radius:999px;background:#374151;color:white;cursor:pointer}
+.timeline button:hover,.timeline button.active{background:#4B2E83}
+footer{text-align:center;padding:40px;opacity:.65}
+@media(max-width:800px){.controls{grid-template-columns:1fr}.preview{height:220px}}
 </style>
 </head>
 
 <body>
 
 <header>
-    <h1>Shamokin Patent Archive</h1>
-    <p>Historic inventions and innovators connected to Shamokin, Pennsylvania</p>
+<h1>Shamokin Patent Archive</h1>
+<p>Historic inventions and innovators connected to Shamokin, Pennsylvania</p>
 </header>
 
 <div class="container">
 
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search patents, inventors, titles, years...">
-    </div>
+<div class="panel">
+<h2>Shamokin Innovation Index</h2>
+<p>This archive highlights patents connected to Shamokin’s industrial, electrical, mining, transportation, household, and mechanical history.</p>
+<div class="stats" id="stats"></div>
+</div>
 
-    <div class="grid" id="patentGrid"></div>
+<div class="panel">
+<h2>Edison-Era & Early Innovation Highlights</h2>
+<p>Explore patents from the period when Shamokin was emerging as a center of electrical, industrial, and communications experimentation.</p>
+<div id="edisonHighlights" class="grid"></div>
+</div>
+
+<div class="panel">
+<h2>Search the Archive</h2>
+<div class="controls">
+<input type="text" id="searchInput" placeholder="Search patents, inventors, titles, years...">
+<select id="inventorFilter"><option value="">All Inventors</option></select>
+<select id="categoryFilter"><option value="">All Categories</option></select>
+</div>
+
+<div class="timeline section" id="timeline"></div>
+</div>
+
+<h2>Notable Patents</h2>
+<div class="grid" id="notableGrid"></div>
+
+<h2>Full Patent Archive</h2>
+<div class="grid" id="patentGrid"></div>
 
 </div>
 
 <footer>
-    GoShamokin.com • City of Opportunity
+GoShamokin.com • City of Opportunity
 </footer>
 
 <script>
 let patents = [];
+let activeDecade = "";
 
 fetch('shamokin_patents.json')
 .then(response => response.text())
 .then(text => {
     text = text.replace(/\bNaN\b/g, 'null');
     patents = JSON.parse(text);
-    renderPatents(patents);
+    setupFilters();
+    renderAll();
 })
 .catch(error => {
     document.getElementById('patentGrid').innerHTML =
-        `<div class="card"><h2>Data failed to load</h2><p>${error}</p></div>`;
+    `<div class="card"><h2>Data failed to load</h2><p>${error}</p></div>`;
 });
 
-function renderPatents(data){
-    const grid = document.getElementById('patentGrid');
-    grid.innerHTML = '';
+function clean(v){ return v || ""; }
 
-    data.forEach(patent => {
-        const number = patent.patent || '';
-        const title = patent.title || 'Untitled Patent';
-        const inventors = patent.inventor || 'Unknown';
-        const year = patent.year || '';
-        const category = patent.category || '';
-        const tier = patent.tier || '';
-        const googleUrl = patent.url || '#';
-        const pdfUrl = `pdfs/${number}.pdf`;
+function pdfUrl(p){ return `pdfs/${clean(p.patent)}.pdf`; }
 
-        const card = document.createElement('div');
-        card.className = 'card';
+function patentCard(p, showPreview=false){
+    const number = clean(p.patent);
+    const title = clean(p.title) || "Untitled Patent";
+    const inventor = clean(p.inventor) || "Unknown";
+    const year = clean(p.year);
+    const category = clean(p.category);
+    const tier = clean(p.tier);
+    const googleUrl = clean(p.url) || "#";
 
-        card.innerHTML = `
-            <h2>${title}</h2>
+    return `
+    <div class="card">
+        <span class="badge">${category}</span>
+        <span class="badge">${tier}</span>
+        <h2>${title}</h2>
+        <div class="meta">
+            <strong>Patent:</strong> ${number}<br>
+            <strong>Inventor:</strong> ${inventor}<br>
+            <strong>Year:</strong> ${year}
+        </div>
+        ${showPreview ? `<iframe class="preview" src="${pdfUrl(p)}"></iframe>` : ""}
+        <a class="button" href="${pdfUrl(p)}" target="_blank">View PDF</a>
+        <a class="button" href="${googleUrl}" target="_blank">Google Patents</a>
+    </div>`;
+}
 
-            <div class="meta">
-                <strong>Patent:</strong> ${number}<br>
-                <strong>Inventor:</strong> ${inventors}<br>
-                <strong>Year:</strong> ${year}<br>
-                <strong>Category:</strong> ${category}<br>
-                <strong>Tier:</strong> ${tier}
-            </div>
+function setupFilters(){
+    const inventors = [...new Set(patents.map(p => clean(p.inventor)).filter(Boolean))].sort();
+    const categories = [...new Set(patents.map(p => clean(p.category)).filter(Boolean))].sort();
 
-            <a class="button" href="${pdfUrl}" target="_blank">View Patent PDF</a>
-            <a class="button" href="${googleUrl}" target="_blank">View on Google Patents</a>
-        `;
+    inventorFilter.innerHTML += inventors.map(i => `<option value="${i}">${i}</option>`).join("");
+    categoryFilter.innerHTML += categories.map(c => `<option value="${c}">${c}</option>`).join("");
 
-        grid.appendChild(card);
+    const decades = [...new Set(patents.map(p => {
+        const y = parseInt(p.year);
+        return y ? Math.floor(y / 10) * 10 : null;
+    }).filter(Boolean))].sort((a,b)=>a-b);
+
+    timeline.innerHTML = `<button onclick="setDecade('')" class="active">All Decades</button>` +
+        decades.map(d => `<button onclick="setDecade('${d}')">${d}s</button>`).join("");
+}
+
+function setDecade(decade){
+    activeDecade = decade;
+    document.querySelectorAll('.timeline button').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    renderAll();
+}
+
+function filteredPatents(){
+    const q = searchInput.value.toLowerCase();
+    const inv = inventorFilter.value;
+    const cat = categoryFilter.value;
+
+    return patents.filter(p => {
+        const y = parseInt(p.year);
+        const decadeMatch = !activeDecade || (y && Math.floor(y / 10) * 10 == activeDecade);
+        return JSON.stringify(p).toLowerCase().includes(q)
+            && (!inv || clean(p.inventor) === inv)
+            && (!cat || clean(p.category) === cat)
+            && decadeMatch;
     });
 }
 
-document.getElementById('searchInput').addEventListener('input', function(){
-    const value = this.value.toLowerCase();
+function renderStats(){
+    const categories = new Set(patents.map(p => clean(p.category)).filter(Boolean));
+    const inventors = new Set(patents.map(p => clean(p.inventor)).filter(Boolean));
+    const years = patents.map(p => parseInt(p.year)).filter(Boolean);
 
-    const filtered = patents.filter(p =>
-        JSON.stringify(p).toLowerCase().includes(value)
-    );
+    stats.innerHTML = `
+    <div class="stat"><strong>${patents.length}</strong>Total Patents</div>
+    <div class="stat"><strong>${inventors.size}</strong>Inventors</div>
+    <div class="stat"><strong>${categories.size}</strong>Categories</div>
+    <div class="stat"><strong>${Math.min(...years)}–${Math.max(...years)}</strong>Year Range</div>`;
+}
 
-    renderPatents(filtered);
-});
+function renderEdisonHighlights(){
+    const highlights = patents.filter(p => {
+        const y = parseInt(p.year);
+        const text = JSON.stringify(p).toLowerCase();
+        return (y >= 1880 && y <= 1889) ||
+               text.includes("electric") ||
+               text.includes("telephone") ||
+               text.includes("lighting") ||
+               text.includes("brock");
+    }).slice(0,6);
+
+    edisonHighlights.innerHTML = highlights.map(p => patentCard(p,false)).join("");
+}
+
+function renderNotable(){
+    const notable = patents.filter(p =>
+        clean(p.tier).includes("Tier 1") ||
+        clean(p.category).includes("Electrical") ||
+        clean(p.category).includes("Telecommunications") ||
+        clean(p.category).includes("Mining")
+    ).slice(0,9);
+
+    notableGrid.innerHTML = notable.map(p => patentCard(p,true)).join("");
+}
+
+function renderArchive(){
+    const data = filteredPatents();
+    patentGrid.innerHTML = data.map(p => patentCard(p,false)).join("");
+}
+
+function renderAll(){
+    renderStats();
+    renderEdisonHighlights();
+    renderNotable();
+    renderArchive();
+}
+
+searchInput.addEventListener('input', renderArchive);
+inventorFilter.addEventListener('change', renderArchive);
+categoryFilter.addEventListener('change', renderArchive);
 </script>
 
 </body>

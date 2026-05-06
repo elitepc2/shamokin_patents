@@ -128,8 +128,6 @@ fetch('shamokin_patents.json')
 
     patents = data;
 
-    console.log(data);
-
     renderPatents(data);
 });
 
@@ -141,30 +139,11 @@ function renderPatents(data){
 
     data.forEach(patent => {
 
-        const number =
-            patent.number ||
-            patent["Patent Number"] ||
-            '';
-
-        const title =
-            patent.title ||
-            patent["Title"] ||
-            'Untitled Patent';
-
-        const inventors =
-            patent.inventors ||
-            patent["Inventor(s)"] ||
-            '';
-
-        const year =
-            patent.year ||
-            patent["Issue Year"] ||
-            '';
-
-        const summary =
-            patent.summary ||
-            patent["Website Summary"] ||
-            '';
+        const number = patent.patent || '';
+        const title = patent.title || 'Untitled Patent';
+        const inventors = patent.inventor || '';
+        const year = patent.year || '';
+        const summary = patent.category || '';
 
         const pdfUrl = `pdfs/${number}.pdf`;
 
@@ -182,7 +161,7 @@ function renderPatents(data){
             </div>
 
             <div class="summary">
-                ${summary}
+                <strong>Category:</strong> ${summary}
             </div>
 
             <a class="button" href="${pdfUrl}" target="_blank">

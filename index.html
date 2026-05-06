@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shamokin Patent Archive</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#111827;
+    color:white;
+    margin:0;
+    padding:0;
+}
+
+header{
+    background:#4B2E83;
+    padding:30px;
+    text-align:center;
+}
+
+header h1{
+    margin:0;
+    font-size:2.5rem;
+}
+
+header p{
+    opacity:.9;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+.search-box{
+    margin-bottom:20px;
+}
+
+.search-box input{
+    width:100%;
+    padding:15px;
+    font-size:18px;
+    border-radius:10px;
+    border:none;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#1f2937;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 0 10px rgba(0,0,0,.4);
+}
+
+.card h2{
+    margin-top:0;
+    color:#c4b5fd;
+}
+
+.meta{
+    font-size:.9rem;
+    opacity:.8;
+    margin-bottom:10px;
+}
+
+.summary{
+    margin-top:15px;
+    line-height:1.5;
+}
+
+.button{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 15px;
+    background:#4B2E83;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.button:hover{
+    background:#6d48b5;
+}
+
+footer{
+    text-align:center;
+    padding:40px;
+    opacity:.6;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Shamokin Patent Archive</h1>
+    <p>Historic inventions and innovators connected to Shamokin, Pennsylvania</p>
+</header>
+
+<div class="container">
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search patents, inventors, titles, years...">
+    </div>
+
+    <div class="grid" id="patentGrid"></div>
+
+</div>
+
+<footer>
+    GoShamokin.com • City of Opportunity
+</footer>
+
+<script>
+let patents = [];
+
+fetch('shamokin_patents.json')
+.then(response => response.json())
+.then(data => {
+    patents = data;
+    renderPatents(data);
+});
+
+function renderPatents(data){
+    const grid = document.getElementById('patentGrid');
+
+    grid.innerHTML = '';
+
+    data.forEach(patent => {
+
+        const number = patent.number || '';
+        const title = patent.title || 'Untitled Patent';
+        const inventors = patent.inventors || '';
+        const year = patent.year || '';
+        const summary = patent.summary || '';
+
+        const pdfUrl = `pdfs/${number}.pdf`;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        card.innerHTML = `
+            <h2>${title}</h2>
+
+            <div class="meta">
+                <strong>Patent:</strong> ${number}<br>
+                <strong>Inventor:</strong> ${inventors}<br>
+                <strong>Year:</strong> ${year}
+            </div>
+
+            <div class="summary">
+                ${summary}
+            </div>
+
+            <a class="button" href="${pdfUrl}" target="_blank">
+                View Patent PDF
+            </a>
+        `;
+
+        grid.appendChild(card);
+    });
+}
+
+document.getElementById('searchInput').addEventListener('input', function(){
+
+    const value = this.value.toLowerCase();
+
+    const filtered = patents.filter(p =>
+        JSON.stringify(p).toLowerCase().includes(value)
+    );
+
+    renderPatents(filtered);
+});
+</script>
+
+</body>
+</html>

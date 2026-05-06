@@ -125,26 +125,51 @@ let patents = [];
 fetch('shamokin_patents.json')
 .then(response => response.json())
 .then(data => {
+
     patents = data;
+
+    console.log(data);
+
     renderPatents(data);
 });
 
 function renderPatents(data){
+
     const grid = document.getElementById('patentGrid');
 
     grid.innerHTML = '';
 
     data.forEach(patent => {
 
-        const number = patent.number || '';
-        const title = patent.title || 'Untitled Patent';
-        const inventors = patent.inventors || '';
-        const year = patent.year || '';
-        const summary = patent.summary || '';
+        const number =
+            patent.number ||
+            patent["Patent Number"] ||
+            '';
+
+        const title =
+            patent.title ||
+            patent["Title"] ||
+            'Untitled Patent';
+
+        const inventors =
+            patent.inventors ||
+            patent["Inventor(s)"] ||
+            '';
+
+        const year =
+            patent.year ||
+            patent["Issue Year"] ||
+            '';
+
+        const summary =
+            patent.summary ||
+            patent["Website Summary"] ||
+            '';
 
         const pdfUrl = `pdfs/${number}.pdf`;
 
         const card = document.createElement('div');
+
         card.className = 'card';
 
         card.innerHTML = `
@@ -169,7 +194,8 @@ function renderPatents(data){
     });
 }
 
-document.getElementById('searchInput').addEventListener('input', function(){
+document.getElementById('searchInput')
+.addEventListener('input', function(){
 
     const value = this.value.toLowerCase();
 

@@ -123,32 +123,32 @@ footer{
 let patents = [];
 
 fetch('shamokin_patents.json')
-.then(response => response.json())
-.then(data => {
-
-    patents = data;
-
-    renderPatents(data);
+.then(response => response.text())
+.then(text => {
+    text = text.replace(/\bNaN\b/g, 'null');
+    patents = JSON.parse(text);
+    renderPatents(patents);
+})
+.catch(error => {
+    document.getElementById('patentGrid').innerHTML =
+        `<div class="card"><h2>Data failed to load</h2><p>${error}</p></div>`;
 });
 
 function renderPatents(data){
-
     const grid = document.getElementById('patentGrid');
-
     grid.innerHTML = '';
 
     data.forEach(patent => {
-
         const number = patent.patent || '';
         const title = patent.title || 'Untitled Patent';
-        const inventors = patent.inventor || '';
+        const inventors = patent.inventor || 'Unknown';
         const year = patent.year || '';
-        const summary = patent.category || '';
-
+        const category = patent.category || '';
+        const tier = patent.tier || '';
+        const googleUrl = patent.url || '#';
         const pdfUrl = `pdfs/${number}.pdf`;
 
         const card = document.createElement('div');
-
         card.className = 'card';
 
         card.innerHTML = `
@@ -157,25 +157,20 @@ function renderPatents(data){
             <div class="meta">
                 <strong>Patent:</strong> ${number}<br>
                 <strong>Inventor:</strong> ${inventors}<br>
-                <strong>Year:</strong> ${year}
+                <strong>Year:</strong> ${year}<br>
+                <strong>Category:</strong> ${category}<br>
+                <strong>Tier:</strong> ${tier}
             </div>
 
-            <div class="summary">
-                <strong>Category:</strong> ${summary}
-            </div>
-
-            <a class="button" href="${pdfUrl}" target="_blank">
-                View Patent PDF
-            </a>
+            <a class="button" href="${pdfUrl}" target="_blank">View Patent PDF</a>
+            <a class="button" href="${googleUrl}" target="_blank">View on Google Patents</a>
         `;
 
         grid.appendChild(card);
     });
 }
 
-document.getElementById('searchInput')
-.addEventListener('input', function(){
-
+document.getElementById('searchInput').addEventListener('input', function(){
     const value = this.value.toLowerCase();
 
     const filtered = patents.filter(p =>

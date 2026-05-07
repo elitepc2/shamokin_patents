@@ -6,32 +6,258 @@
 <title>Shamokin Patent Archive</title>
 
 <style>
-body{font-family:Arial,sans-serif;background:#111827;color:white;margin:0}
-header{background:#4B2E83;padding:35px 20px;text-align:center}
-header h1{margin:0;font-size:2.6rem}
-header p{opacity:.9}
-.container{max-width:1250px;margin:auto;padding:20px}
-.panel{background:#1f2937;border-radius:16px;padding:20px;margin-bottom:20px}
-.controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
-input,select{padding:14px;border-radius:10px;border:none;font-size:16px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-.stat{background:#2d3748;border-radius:14px;padding:16px;text-align:center}
-.stat strong{display:block;font-size:1.8rem;color:#c4b5fd}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:20px}
-.card{background:#1f2937;border-radius:16px;padding:18px;box-shadow:0 0 10px rgba(0,0,0,.35)}
-.card h2{margin-top:0;color:#c4b5fd}
-.meta{font-size:.92rem;opacity:.88;line-height:1.5}
-.badge{display:inline-block;background:#4B2E83;padding:5px 9px;border-radius:999px;margin:4px 4px 8px 0;font-size:.78rem}
-.button{display:inline-block;margin:10px 8px 0 0;padding:10px 13px;background:#4B2E83;color:white;text-decoration:none;border-radius:8px}
-.button:hover{background:#6d48b5}
-.preview{width:100%;height:360px;border:0;border-radius:10px;background:#111827;margin-top:12px}
-.timeline button{margin:4px;padding:8px 12px;border:0;border-radius:999px;background:#374151;color:white;cursor:pointer}
-.timeline button:hover,.timeline button.active{background:#4B2E83}
-footer{text-align:center;padding:40px;opacity:.65}
+body{
+  font-family:Arial,sans-serif;
+  background:linear-gradient(to bottom,#0b1729,#111827);
+  color:white;
+  margin:0;
+}
+
+header{
+  background:#4B2E83;
+  padding:28px 20px;
+  text-align:center;
+}
+
+header h1{
+  margin:0;
+  font-size:2.7rem;
+}
+
+header p{
+  opacity:.92;
+  margin-top:10px;
+}
+
+.container{
+  max-width:1250px;
+  margin:auto;
+  padding:20px;
+}
+
+.panel{
+  background:#1f2937;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:20px;
+}
+
+/* FEATURED PATENT */
+
+.featured-patent{
+  background:linear-gradient(135deg,#243b63,#1d2d50);
+  border-radius:18px;
+  padding:28px;
+  margin-bottom:24px;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:28px;
+  align-items:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.featured-tag{
+  display:inline-block;
+  background:#6d48b5;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:.8rem;
+  font-weight:bold;
+  margin-bottom:14px;
+}
+
+.featured-tier{
+  color:#d8c7ff;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.featured-patent h2{
+  margin:0 0 14px;
+  font-size:2.3rem;
+  color:#fff;
+}
+
+.featured-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  margin-bottom:18px;
+  opacity:.92;
+}
+
+.featured-patent p{
+  line-height:1.7;
+  color:#e5e7eb;
+  margin-bottom:22px;
+}
+
+.featured-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+.featured-right iframe{
+  width:100%;
+  height:430px;
+  border:0;
+  border-radius:14px;
+  background:#111827;
+}
+
+/* CONTROLS */
+
+.controls{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:12px;
+}
+
+input,select{
+  padding:14px;
+  border-radius:10px;
+  border:none;
+  font-size:16px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;
+}
+
+.stat{
+  background:#2d3748;
+  border-radius:14px;
+  padding:16px;
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  font-size:1.8rem;
+  color:#c4b5fd;
+}
+
+/* PATENT GRID */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:#1f2937;
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 0 10px rgba(0,0,0,.35);
+  transition:.25s ease;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 32px rgba(0,0,0,.28);
+}
+
+.card h2{
+  margin-top:0;
+  color:#c4b5fd;
+}
+
+.meta{
+  font-size:.92rem;
+  opacity:.88;
+  line-height:1.5;
+}
+
+.badge{
+  display:inline-block;
+  background:#4B2E83;
+  padding:5px 9px;
+  border-radius:999px;
+  margin:4px 4px 8px 0;
+  font-size:.78rem;
+}
+
+.button{
+  display:inline-block;
+  margin:10px 8px 0 0;
+  padding:10px 13px;
+  background:#4B2E83;
+  color:white;
+  text-decoration:none;
+  border-radius:8px;
+  transition:.2s ease;
+}
+
+.button:hover{
+  background:#6d48b5;
+}
+
+.preview{
+  width:100%;
+  height:360px;
+  border:0;
+  border-radius:10px;
+  background:#111827;
+  margin-top:12px;
+}
+
+.timeline button{
+  margin:4px;
+  padding:8px 12px;
+  border:0;
+  border-radius:999px;
+  background:#374151;
+  color:white;
+  cursor:pointer;
+}
+
+.timeline button:hover,
+.timeline button.active{
+  background:#4B2E83;
+}
+
+footer{
+  text-align:center;
+  padding:40px;
+  opacity:.65;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+  .featured-patent{
+    grid-template-columns:1fr;
+  }
+
+  .featured-patent h2{
+    font-size:1.9rem;
+  }
+
+  .featured-right iframe{
+    height:340px;
+  }
+
+}
+
 @media(max-width:800px){
-  .controls{grid-template-columns:1fr}
-  .grid{grid-template-columns:1fr}
-  .preview{height:300px}
+
+  .controls{
+    grid-template-columns:1fr;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .preview{
+    height:300px;
+  }
+
 }
 </style>
 </head>
@@ -45,24 +271,106 @@ footer{text-align:center;padding:40px;opacity:.65}
 
 <div class="container">
 
+<!-- FEATURED PATENT -->
+
+<div class="featured-patent">
+
+<div class="featured-left">
+
+<div class="featured-tag">
+Featured Innovation
+</div>
+
+<div class="featured-tier">
+Tier 1 – Narrative Anchor
+</div>
+
+<h2>Telephone Central Office Apparatus</h2>
+
+<div class="featured-meta">
+<div><strong>Patent:</strong> US282699A</div>
+<div><strong>Inventor:</strong> William M. Brock</div>
+<div><strong>Year:</strong> 1883</div>
+</div>
+
+<p>
+One of the most historically significant patents connected to Shamokin,
+this invention represents early telephone exchange technology during
+the same era as Edison-era electrical expansion across Pennsylvania.
+</p>
+
+<div class="featured-buttons">
+
+<a class="button"
+href="pdfs/US282699A.pdf"
+target="_blank">
+Open PDF
+</a>
+
+<a class="button"
+href="https://patents.google.com/patent/US282699A"
+target="_blank">
+Google Patents
+</a>
+
+</div>
+
+</div>
+
+<div class="featured-right">
+<iframe
+src="pdfs/US282699A.pdf"
+loading="lazy">
+</iframe>
+</div>
+
+</div>
+
+<!-- STATS -->
+
 <div class="panel">
 <h2>Shamokin Innovation Index</h2>
-<p>This archive highlights patents connected to Shamokin’s industrial, electrical, mining, transportation, household, and mechanical history.</p>
+
+<p>
+This archive highlights patents connected to Shamokin’s industrial,
+electrical, mining, transportation, household, and mechanical history.
+</p>
+
 <div class="stats" id="stats"></div>
 </div>
 
+<!-- SEARCH -->
+
 <div class="panel">
+
 <h2>Search the Archive</h2>
+
 <div class="controls">
-<input type="text" id="searchInput" placeholder="Search patents, inventors, titles, years...">
-<select id="inventorFilter"><option value="">All Inventors</option></select>
-<select id="categoryFilter"><option value="">All Categories</option></select>
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search patents, inventors, titles, years...">
+
+<select id="inventorFilter">
+<option value="">All Inventors</option>
+</select>
+
+<select id="categoryFilter">
+<option value="">All Categories</option>
+</select>
+
 </div>
 
-<div class="timeline" id="timeline" style="margin-top:20px;"></div>
+<div class="timeline"
+id="timeline"
+style="margin-top:20px;">
+</div>
+
 </div>
 
 <h2>Full Patent Archive</h2>
+
 <div class="grid" id="patentGrid"></div>
 
 </div>
@@ -72,20 +380,30 @@ GoShamokin.com • City of Opportunity
 </footer>
 
 <script>
+
 let patents = [];
 let activeDecade = "";
 
 fetch('shamokin_patents.json')
 .then(response => response.text())
 .then(text => {
+
     text = text.replace(/\bNaN\b/g, 'null');
+
     patents = JSON.parse(text);
+
     setupFilters();
     renderAll();
+
 })
 .catch(error => {
+
     document.getElementById('patentGrid').innerHTML =
-    `<div class="card"><h2>Data failed to load</h2><p>${error}</p></div>`;
+    `<div class="card">
+        <h2>Data failed to load</h2>
+        <p>${error}</p>
+    </div>`;
+
 });
 
 function clean(v){
@@ -97,6 +415,7 @@ function pdfUrl(p){
 }
 
 function patentCard(p){
+
     const number = clean(p.patent);
     const title = clean(p.title) || "Untitled Patent";
     const inventor = clean(p.inventor) || "Unknown";
@@ -107,8 +426,10 @@ function patentCard(p){
 
     return `
     <div class="card">
+
         <span class="badge">${category}</span>
         <span class="badge">${tier}</span>
+
         <h2>${title}</h2>
 
         <div class="meta">
@@ -117,74 +438,168 @@ function patentCard(p){
             <strong>Year:</strong> ${year}
         </div>
 
-        <iframe class="preview" src="${pdfUrl(p)}"></iframe>
+        <iframe class="preview"
+        src="${pdfUrl(p)}"></iframe>
 
-        <a class="button" href="${pdfUrl(p)}" target="_blank">Open PDF</a>
-        <a class="button" href="${googleUrl}" target="_blank">Google Patents</a>
+        <a class="button"
+        href="${pdfUrl(p)}"
+        target="_blank">
+        Open PDF
+        </a>
+
+        <a class="button"
+        href="${googleUrl}"
+        target="_blank">
+        Google Patents
+        </a>
+
     </div>`;
 }
 
 function setupFilters(){
-    const inventors = [...new Set(patents.map(p => clean(p.inventor)).filter(Boolean))].sort();
-    const categories = [...new Set(patents.map(p => clean(p.category)).filter(Boolean))].sort();
 
-    inventorFilter.innerHTML += inventors.map(i => `<option value="${i}">${i}</option>`).join("");
-    categoryFilter.innerHTML += categories.map(c => `<option value="${c}">${c}</option>`).join("");
+    const inventors =
+    [...new Set(
+        patents.map(p => clean(p.inventor))
+        .filter(Boolean)
+    )].sort();
 
-    const decades = [...new Set(patents.map(p => {
-        const y = parseInt(p.year);
-        return y ? Math.floor(y / 10) * 10 : null;
-    }).filter(Boolean))].sort((a,b)=>a-b);
+    const categories =
+    [...new Set(
+        patents.map(p => clean(p.category))
+        .filter(Boolean)
+    )].sort();
+
+    inventorFilter.innerHTML +=
+    inventors.map(i =>
+        `<option value="${i}">${i}</option>`
+    ).join("");
+
+    categoryFilter.innerHTML +=
+    categories.map(c =>
+        `<option value="${c}">${c}</option>`
+    ).join("");
+
+    const decades =
+    [...new Set(
+        patents.map(p => {
+            const y = parseInt(p.year);
+            return y ? Math.floor(y / 10) * 10 : null;
+        }).filter(Boolean)
+    )].sort((a,b)=>a-b);
 
     timeline.innerHTML =
-        `<button onclick="setDecade('', this)" class="active">All Decades</button>` +
-        decades.map(d => `<button onclick="setDecade('${d}', this)">${d}s</button>`).join("");
+    `<button onclick="setDecade('', this)"
+    class="active">All Decades</button>` +
+
+    decades.map(d =>
+        `<button onclick="setDecade('${d}', this)">
+        ${d}s
+        </button>`
+    ).join("");
+
 }
 
 function setDecade(decade, button){
+
     activeDecade = decade;
-    document.querySelectorAll('.timeline button').forEach(b => b.classList.remove('active'));
+
+    document.querySelectorAll('.timeline button')
+    .forEach(b => b.classList.remove('active'));
+
     button.classList.add('active');
+
     renderArchive();
+
 }
 
 function filteredPatents(){
+
     const q = searchInput.value.toLowerCase();
     const inv = inventorFilter.value;
     const cat = categoryFilter.value;
 
     return patents.filter(p => {
-        const y = parseInt(p.year);
-        const decadeMatch = !activeDecade || (y && Math.floor(y / 10) * 10 == activeDecade);
 
-        return JSON.stringify(p).toLowerCase().includes(q)
-            && (!inv || clean(p.inventor) === inv)
-            && (!cat || clean(p.category) === cat)
-            && decadeMatch;
+        const y = parseInt(p.year);
+
+        const decadeMatch =
+        !activeDecade ||
+        (y && Math.floor(y / 10) * 10 == activeDecade);
+
+        return JSON.stringify(p)
+        .toLowerCase()
+        .includes(q)
+
+        && (!inv || clean(p.inventor) === inv)
+        && (!cat || clean(p.category) === cat)
+        && decadeMatch;
+
     });
+
 }
 
 function renderStats(){
-    const categories = new Set(patents.map(p => clean(p.category)).filter(Boolean));
-    const inventors = new Set(patents.map(p => clean(p.inventor)).filter(Boolean));
-    const years = patents.map(p => parseInt(p.year)).filter(Boolean);
+
+    const categories =
+    new Set(
+        patents.map(p => clean(p.category))
+        .filter(Boolean)
+    );
+
+    const inventors =
+    new Set(
+        patents.map(p => clean(p.inventor))
+        .filter(Boolean)
+    );
+
+    const years =
+    patents.map(p => parseInt(p.year))
+    .filter(Boolean);
 
     stats.innerHTML = `
-    <div class="stat"><strong>${patents.length}</strong>Total Patents</div>
-    <div class="stat"><strong>${inventors.size}</strong>Inventors</div>
-    <div class="stat"><strong>${categories.size}</strong>Categories</div>
-    <div class="stat"><strong>${Math.min(...years)}–${Math.max(...years)}</strong>Year Range</div>`;
+
+    <div class="stat">
+        <strong>${patents.length}</strong>
+        Total Patents
+    </div>
+
+    <div class="stat">
+        <strong>${inventors.size}</strong>
+        Inventors
+    </div>
+
+    <div class="stat">
+        <strong>${categories.size}</strong>
+        Categories
+    </div>
+
+    <div class="stat">
+        <strong>${Math.min(...years)}–${Math.max(...years)}</strong>
+        Year Range
+    </div>
+
+    `;
 }
 
 function renderArchive(){
+
     const data = filteredPatents();
 
     if(data.length === 0){
-        patentGrid.innerHTML = `<div class="card"><h2>No results found</h2><p>Try another search or filter.</p></div>`;
+
+        patentGrid.innerHTML =
+        `<div class="card">
+            <h2>No results found</h2>
+            <p>Try another search or filter.</p>
+        </div>`;
+
         return;
     }
 
-    patentGrid.innerHTML = data.map(p => patentCard(p)).join("");
+    patentGrid.innerHTML =
+    data.map(p => patentCard(p)).join("");
+
 }
 
 function renderAll(){
@@ -195,6 +610,7 @@ function renderAll(){
 searchInput.addEventListener('input', renderArchive);
 inventorFilter.addEventListener('change', renderArchive);
 categoryFilter.addEventListener('change', renderArchive);
+
 </script>
 
 </body>
